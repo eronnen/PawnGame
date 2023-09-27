@@ -12,6 +12,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "chessground": "^9.0.4"
+    "chessground": "^9.0.4",
+    "sass": "^1.68.0"
   }
 }
