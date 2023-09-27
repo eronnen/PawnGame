@@ -1,0 +1,58 @@
+/** Colored board squares as an embedded SVG */
+cg-board {
+  background-color: #f0d9b5;
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOng9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyIgdmlld0JveD0iMCAwIDggOCI+PGcgaWQ9ImYiPjxnIGlkPSJlIj48ZyBpZD0iZCI+PGcgaWQ9ImMiPjxwYXRoIGlkPSJhIiBmaWxsPSIjZjBkOWI1IiBkPSJNMCAwaDF2MUgweiIvPjx1c2UgeDpocmVmPSIjYSIgeD0iMSIgeT0iMSIgaHJlZj0iI2EiLz48cGF0aCBpZD0iYiIgZmlsbD0iI2I1ODg2MyIgZD0iTTAgMWgxdjFIMHoiLz48dXNlIHg6aHJlZj0iI2IiIHg9IjEiIHk9Ii0xIiBocmVmPSIjYiIvPjwvZz48dXNlIHg6aHJlZj0iI2MiIHg9IjIiIGhyZWY9IiNjIi8+PC9nPjx1c2UgeDpocmVmPSIjZCIgeD0iNCIgaHJlZj0iI2QiLz48L2c+PHVzZSB4OmhyZWY9IiNlIiB5PSIyIiBocmVmPSIjZSIvPjwvZz48dXNlIHg6aHJlZj0iI2YiIHk9IjQiIGhyZWY9IiNmIi8+PC9zdmc+');
+}
+
+/** Interactive board square colors */
+cg-board square.move-dest {
+  background: radial-gradient(rgba(20, 85, 30, 0.5) 22%, #208530 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0);
+}
+cg-board square.premove-dest {
+  background: radial-gradient(rgba(20, 30, 85, 0.5) 22%, #203085 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0);
+}
+cg-board square.oc.move-dest {
+  background: radial-gradient(transparent 0%, transparent 80%, rgba(20, 85, 0, 0.3) 80%);
+}
+cg-board square.oc.premove-dest {
+  background: radial-gradient(transparent 0%, transparent 80%, rgba(20, 30, 85, 0.2) 80%);
+}
+cg-board square.move-dest:hover {
+  background: rgba(20, 85, 30, 0.3);
+}
+cg-board square.premove-dest:hover {
+  background: rgba(20, 30, 85, 0.2);
+}
+cg-board square.last-move {
+  background-color: rgba(155, 199, 0, 0.41);
+}
+cg-board square.selected {
+  background-color: rgba(20, 85, 30, 0.5);
+}
+cg-board square.check {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 0, 0, 1) 0%,
+    rgba(231, 0, 0, 1) 25%,
+    rgba(169, 0, 0, 0) 89%,
+    rgba(158, 0, 0, 0) 100%
+  );
+}
+cg-board square.current-premove {
+  background-color: rgba(20, 30, 85, 0.5);
+}
+
+/** Alternating colors in rank/file labels */
+.cg-wrap.orientation-white coords.ranks coord:nth-child(2n),
+.cg-wrap.orientation-white coords.files coord:nth-child(2n),
+.cg-wrap.orientation-black coords.ranks coord:nth-child(2n + 1),
+.cg-wrap.orientation-black coords.files coord:nth-child(2n + 1) {
+  color: rgba(72, 72, 72, 0.8);
+}
+
+.cg-wrap.orientation-black coords.ranks coord:nth-child(2n),
+.cg-wrap.orientation-black coords.files coord:nth-child(2n),
+.cg-wrap.orientation-white coords.ranks coord:nth-child(2n + 1),
+.cg-wrap.orientation-white coords.files coord:nth-child(2n + 1) {
+  color: rgba(255, 255, 255, 0.8);
+}
