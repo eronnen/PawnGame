@@ -1,17 +1,16 @@
 import { Chessground } from './chessground.min.js';
 
-import { fen, compat, pawnAttacks, defined, opposite, SquareSet, makeSquare } from './chessops.min.js';
+import { fen, pawnAttacks, defined, opposite, SquareSet, makeSquare, parseSquare, squareRank } from './chessops.min.js';
 
-const canCaptureEp = (board, pawnFrom) => {
-  if (!defined(board.epSquare)) return false;
-  if (!pawnAttacks(board.turn, pawnFrom).has(pos.epSquare)) return false;
+const canCaptureEp = (pawnFrom) => {
+  if (!defined(setup.epSquare)) return false;
+  if (!pawnAttacks(setup.turn, pawnFrom).has(setup.epSquare)) return false;
   return true;
 };
 
 function dests() {
   const allDests = new Map();
   for (const square of setup.board[setup.turn]) {
-    console.log(square);
     const piece = setup.board.get(square);
     if (!piece || piece.color !== setup.turn) continue;
     if (piece.role !== 'pawn') {
@@ -31,7 +30,7 @@ function dests() {
         pseudo = pseudo.with(doubleStep);
       }
     }
-    if (defined(setup.epSquare) && canCaptureEp(setup, square)) {
+    if (defined(setup.epSquare) && canCaptureEp(square)) {
       legal = SquareSet.fromSquare(setup.epSquare);
     }
 
@@ -50,20 +49,79 @@ function dests() {
   return result;
 }
 
+function move(orig, dest) {
+  const move = {
+    from: parseSquare(orig),
+    to: parseSquare(dest),
+  };
+  console.log("move", move);
+  
+  const turn = setup.turn;
+  const epSquare = setup.epSquare;
+  
+  setup.epSquare = undefined;
+  if (turn === 'black') setup.fullmoves += 1;
+  setup.turn = opposite(setup.turn);
+  const piece = setup.board.take(move.from);
+  if (!piece) return;
+  if (piece.role !== 'pawn') {
+    console.log("WTF");
+    return;
+  }
+  let epCapture = undefined;
+  if (move.to === epSquare) {
+    epCapture = setup.board.take(move.to + (turn === 'white' ? -8 : 8));
+  }
+  const delta = move.from - move.to;
+  if (Math.abs(delta) === 16 && 8 <= move.from && move.from <= 55) {
+    setup.epSquare = (move.from + move.to) >> 1;
+  }
+
+  if (0 == squareRank(move.to) || 7 == squareRank(move.to)) {
+    console.log("game over!!!");
+    is_game_over = true;
+  }
+
+  const capture = setup.board.set(move.to, piece) || epCapture;
+  console.log("capture", capture);
+}
+
 function update(orig, dest) {
-  console.log('update');
-  board.set({
-    fen: chess.move({ from: orig, to: dest }).unwrap().fen(),
-    turnColor: opposite(turn)
-  });
+  console.log("update", orig, dest);
+  move(orig, dest);
+  console.log("fen", fen.makeFen(setup));
+  let config = {
+    fen: fen.makeFen(setup),
+    turnColor: setup.turn,
+  };
+
+  if (!is_game_over) {
+    config.movable = {
+      color: setup.turn,
+      free: false,
+      dests: dests(),
+      events: {
+        after: update
+      }
+    };
+  } else {
+    config.movable = {
+      color: setup.turn,
+      free: false,
+      dests: undefined,
+      events: {
+        after: undefined
+      }
+    };
+  }
+  chessground.set(config);
 }
 
 const START_FEN = '8/pppppppp/8/8/8/8/PPPPPPPP/8 w - - 0 1'
-
 const setup = fen.parseFen(START_FEN).unwrap();
-let turn = 'white';
+let is_game_over = false;
 
-const board = Chessground(document.getElementById('board'), {
+const chessground = Chessground(document.getElementById('board'), {
   fen: START_FEN,
   turnColor: setup.turn,
   movable: {
