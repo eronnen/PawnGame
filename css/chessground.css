@@ -14,6 +14,79 @@
   --cg-cs: none;
 }
 
+.cg-wrap coords {
+  /* handle hidden coords */
+  /* handle inner coords */
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+  user-select: none;
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+  font-weight: bold;
+}
+.coords-no .cg-wrap coords {
+  display: none;
+}
+.cg-wrap coords {
+  font-size: 8px;
+}
+@media (min-width: 320px) {
+  .cg-wrap coords {
+    font-size: calc(8px + 4 * (100vw - 320px) / 880);
+  }
+}
+@media (min-width: 1200px) {
+  .cg-wrap coords {
+    font-size: 12px;
+  }
+}
+.cg-wrap coords.ranks {
+  flex-flow: column-reverse;
+  top: 1px;
+  right: 0;
+  height: 100%;
+  width: 0.8em;
+}
+.cg-wrap coords.ranks.black {
+  flex-flow: column;
+}
+.cg-wrap coords.files {
+  bottom: 0px;
+  left: 0;
+  text-align: left;
+  flex-flow: row;
+  width: 100%;
+  height: 1.4em;
+}
+.cg-wrap coords.files.black {
+  flex-flow: row-reverse;
+}
+.cg-wrap coords.files coord {
+  padding-left: 4px;
+}
+.cg-wrap coords coord {
+  flex: 1 1 auto;
+}
+
+.cg-wrap coords {
+  text-shadow: var(--cg-cs, 0 1px 2px #000);
+}
+
+.cg-wrap.orientation-white .files coord:nth-child(2n+1),
+.cg-wrap.orientation-white .ranks coord:nth-child(2n),
+.cg-wrap.orientation-black .files coord:nth-child(2n),
+.cg-wrap.orientation-black .ranks coord:nth-child(2n+1) {
+  color: var(--cg-ccw, #fff);
+}
+
+.cg-wrap.orientation-white .files coord:nth-child(2n),
+.cg-wrap.orientation-white .ranks coord:nth-child(2n+1),
+.cg-wrap.orientation-black .files coord:nth-child(2n+1),
+.cg-wrap.orientation-black .ranks coord:nth-child(2n) {
+  color: var(--cg-ccb, #fff);
+}
+
 .cg-wrap cg-board {
   top: 0;
   left: 0;

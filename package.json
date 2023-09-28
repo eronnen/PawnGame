@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile-css": "npx-sass scss:css"
+    "compile-css": "npx sass scss:css"
   },
   "author": "",
   "license": "GPL-3.0",
@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "chessground": "^9.0.4",
-    "node-sass": "^9.0.0",
     "sass": "^1.68.0"
   }
 }

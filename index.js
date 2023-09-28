@@ -79,7 +79,7 @@ function move(orig, dest) {
 
   if (0 == squareRank(move.to) || 7 == squareRank(move.to)) {
     console.log("game over!!!");
-    is_game_over = true;
+    winner = turn;
   }
 
   const capture = setup.board.set(move.to, piece) || epCapture;
@@ -95,7 +95,7 @@ function update(orig, dest) {
     turnColor: setup.turn,
   };
 
-  if (!is_game_over) {
+  if (!winner) {
     config.movable = {
       color: setup.turn,
       free: false,
@@ -113,16 +113,24 @@ function update(orig, dest) {
         after: undefined
       }
     };
+
+    const gameOverElement = document.createElement('div');
+    gameOverElement.id = 'game-over';
+    gameOverElement.style.fontSize = '80px';
+    gameOverElement.style.textAlign = 'center';
+    gameOverElement.innerHTML = `Game Over! ${winner} won!!!`;
+    document.body.appendChild(gameOverElement);
   }
   chessground.set(config);
 }
 
 const START_FEN = '8/pppppppp/8/8/8/8/PPPPPPPP/8 w - - 0 1'
 const setup = fen.parseFen(START_FEN).unwrap();
-let is_game_over = false;
+let winner = undefined;
 
 const chessground = Chessground(document.getElementById('board'), {
   fen: START_FEN,
+  coordinates: true,
   turnColor: setup.turn,
   movable: {
     color: setup.turn,
